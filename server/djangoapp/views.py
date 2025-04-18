@@ -1,23 +1,25 @@
 # Uncomment the required imports before adding the code
 
-from django.shortcuts import render
-from django.http import HttpResponseRedirect, HttpResponse
-from django.contrib.auth.models import User
-from django.shortcuts import get_object_or_404, render, redirect
-from django.contrib.auth import logout
-from django.contrib import messages
-from datetime import datetime
+# from django.shortcuts import render
 
-from django.http import JsonResponse
-from django.contrib.auth import login, authenticate
-import logging
 import json
+import logging
+
+from django.contrib.auth import authenticate, login, logout
+
+# from django.http import HttpResponseRedirect, HttpResponse
+from django.contrib.auth.models import User
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.csrf import csrf_exempt
 
 from .models import CarMake, CarModel
-
 from .populate import initiate
-from .restapis import get_request, analyze_review_sentiments, post_review
+from .restapis import analyze_review_sentiments, get_request, post_review
+
+# from django.contrib import messages
+# from datetime import datetime
+
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -67,7 +69,7 @@ def registration(request):
         # Check if user already exists
         User.objects.get(username=username)
         username_exist = True
-    except:
+    except Exception as err:
         # If not, simply log this is a new user
         logger.debug("{} is new user".format(username))
 
@@ -138,7 +140,7 @@ def add_review(request):
         try:
             response = post_review(data)
             return JsonResponse({"status": 200})
-        except:
+        except Exception as err:
             return JsonResponse({"status": 401, "message": "Error in posting review"})
     else:
         return JsonResponse({"status": 403, "message": "Unauthorized"})
