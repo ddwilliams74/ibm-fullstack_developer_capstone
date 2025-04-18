@@ -98,7 +98,7 @@ def registration(request):
 # def get_dealerships(request):
 # Update the `get_dealerships` render list of dealerships all by default, particular state if state is passed
 def get_dealerships(request, state="All"):
-    print(request)
+    print(request)  # Lint fix
     if state == "All":
         endpoint = "/fetchDealers"
     else:
